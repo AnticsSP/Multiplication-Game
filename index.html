@@ -13,6 +13,7 @@
         <div class="mode-switch">
             <button onclick="switchMode('game')" class="mode-button mode-active" id="gameMode" style="background-color: #e67e22;">Quiz Mode 📝</button>
             <button onclick="switchMode('practice')" class="mode-button" id="practiceMode" style="background-color: #e67e22;">Flash Cards 🔄</button>
+            <button onclick="switchMode('william')" class="mode-button" id="williamMode" style="background-color: #e67e22;">William's Math 📚</button>
         </div>
         
         <div id="gameSection" style="display: block;">
@@ -65,6 +66,28 @@
                 </div>
                 <div class="practice-info">
                     Click card to flip! Practice makes perfect! 🌟
+                </div>
+            </div>
+        </div>
+
+        <div id="williamSection" style="display: none;">
+            <div class="flash-card-container">
+                <div class="flash-card" onclick="flipCard()">
+                    <div class="flash-card-inner">
+                        <div class="flash-card-front">
+                            <span id="williamCardQuestion">2 × 2</span>
+                        </div>
+                        <div class="flash-card-back">
+                            <span id="williamCardAnswer">4</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flash-card-controls">
+                    <button onclick="previousWilliamCard()" class="control-btn">← Previous</button>
+                    <button onclick="nextWilliamCard()" class="control-btn">Next →</button>
+                </div>
+                <div class="practice-info">
+                    William's Practice Cards - Click to flip! 🌟
                 </div>
             </div>
         </div>

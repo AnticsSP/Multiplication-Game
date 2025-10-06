@@ -8,6 +8,90 @@ let currentMode = 'game';
 // Flash card variables
 let currentCardIndex = 0;
 let flashCards = [];
+let williamCards = [];
+let currentWilliamIndex = 0;
+
+// William's specific multiplication problems
+const williamProblems = [
+    {question: "2 × 9", answer: 18}, {question: "1 × 10", answer: 10},
+    {question: "2 × 6", answer: 12}, {question: "2 × 12", answer: 24},
+    {question: "2 × 4", answer: 8}, {question: "2 × 10", answer: 20},
+    {question: "2 × 7", answer: 14}, {question: "1 × 8", answer: 8},
+    {question: "2 × 2", answer: 4}, {question: "2 × 8", answer: 16},
+    {question: "3 × 12", answer: 36}, {question: "4 × 6", answer: 24},
+    {question: "1 × 11", answer: 11}, {question: "2 × 5", answer: 10},
+    {question: "3 × 10", answer: 30}, {question: "4 × 4", answer: 16},
+    {question: "1 × 9", answer: 9}, {question: "2 × 3", answer: 6},
+    {question: "3 × 8", answer: 24}, {question: "4 × 2", answer: 8},
+    {question: "1 × 7", answer: 7}, {question: "2 × 1", answer: 2},
+    {question: "3 × 5", answer: 15}, {question: "3 × 11", answer: 33},
+    {question: "4 × 5", answer: 20}, {question: "3 × 6", answer: 18},
+    {question: "3 × 3", answer: 9}, {question: "3 × 9", answer: 27},
+    {question: "4 × 3", answer: 12}, {question: "3 × 4", answer: 12},
+    {question: "3 × 1", answer: 3}, {question: "3 × 7", answer: 21},
+    {question: "4 × 1", answer: 4}, {question: "3 × 2", answer: 6},
+    {question: "5 × 5", answer: 25}, {question: "5 × 11", answer: 55},
+    {question: "4 × 10", answer: 40}, {question: "5 × 4", answer: 20},
+    {question: "5 × 10", answer: 50}, {question: "5 × 1", answer: 5},
+    {question: "5 × 7", answer: 35}, {question: "4 × 8", answer: 32},
+    {question: "5 × 2", answer: 10}, {question: "5 × 8", answer: 40},
+    {question: "6 × 6", answer: 36}, {question: "6 × 12", answer: 72},
+    {question: "7 × 6", answer: 42}, {question: "4 × 11", answer: 44},
+    {question: "6 × 4", answer: 24}, {question: "6 × 10", answer: 60},
+    {question: "7 × 4", answer: 28}, {question: "4 × 9", answer: 36},
+    {question: "6 × 2", answer: 12}, {question: "6 × 8", answer: 48},
+    {question: "7 × 2", answer: 14}, {question: "4 × 7", answer: 28},
+    {question: "6 × 5", answer: 30}, {question: "6 × 11", answer: 66},
+    {question: "7 × 5", answer: 35}, {question: "6 × 3", answer: 18},
+    {question: "6 × 9", answer: 54}, {question: "7 × 3", answer: 21},
+    {question: "6 × 1", answer: 6}, {question: "6 × 7", answer: 42},
+    {question: "7 × 1", answer: 7}, {question: "8 × 5", answer: 40},
+    {question: "8 × 11", answer: 88}, {question: "7 × 12", answer: 84},
+    {question: "8 × 6", answer: 48}, {question: "8 × 12", answer: 96},
+    {question: "8 × 3", answer: 24}, {question: "8 × 9", answer: 72},
+    {question: "7 × 10", answer: 70}, {question: "8 × 4", answer: 32},
+    {question: "8 × 10", answer: 80}, {question: "8 × 1", answer: 8},
+    {question: "8 × 7", answer: 56}, {question: "7 × 8", answer: 56},
+    {question: "8 × 2", answer: 16}, {question: "8 × 8", answer: 64},
+    {question: "9 × 6", answer: 54}, {question: "9 × 12", answer: 108},
+    {question: "10 × 6", answer: 60}, {question: "7 × 11", answer: 77},
+    {question: "9 × 4", answer: 36}, {question: "9 × 10", answer: 90},
+    {question: "10 × 4", answer: 40}, {question: "7 × 9", answer: 63},
+    {question: "9 × 2", answer: 18}, {question: "9 × 8", answer: 72},
+    {question: "10 × 2", answer: 20}, {question: "7 × 7", answer: 49},
+    {question: "11 × 12", answer: 132}, {question: "9 × 5", answer: 45},
+    {question: "9 × 11", answer: 99}, {question: "10 × 5", answer: 50},
+    {question: "11 × 10", answer: 110}, {question: "9 × 3", answer: 27},
+    {question: "9 × 9", answer: 81}, {question: "10 × 3", answer: 30},
+    {question: "11 × 8", answer: 88}, {question: "9 × 1", answer: 9},
+    {question: "9 × 7", answer: 63}, {question: "10 × 1", answer: 10},
+    {question: "10 × 11", answer: 110}, {question: "11 × 5", answer: 55},
+    {question: "11 × 11", answer: 121}, {question: "10 × 12", answer: 120},
+    {question: "11 × 6", answer: 66}, {question: "10 × 9", answer: 90},
+    {question: "11 × 3", answer: 33}, {question: "11 × 9", answer: 99},
+    {question: "10 × 10", answer: 100}, {question: "11 × 4", answer: 44},
+    {question: "10 × 7", answer: 70}, {question: "11 × 1", answer: 11},
+    {question: "11 × 7", answer: 77}, {question: "10 × 8", answer: 80},
+    {question: "11 × 2", answer: 22}, {question: "12 × 5", answer: 60},
+    {question: "12 × 11", answer: 132}, {question: "12 × 6", answer: 72},
+    {question: "12 × 12", answer: 144}, {question: "12 × 3", answer: 36},
+    {question: "12 × 9", answer: 108}, {question: "12 × 4", answer: 48},
+    {question: "12 × 1", answer: 12}, {question: "12 × 7", answer: 84},
+    {question: "12 × 2", answer: 24}, {question: "12 × 8", answer: 96},
+    {question: "0 × 5", answer: 0}, {question: "0 × 11", answer: 0},
+    {question: "1 × 5", answer: 5}, {question: "0 × 6", answer: 0},
+    {question: "0 × 12", answer: 0}, {question: "1 × 6", answer: 6},
+    {question: "0 × 3", answer: 0}, {question: "0 × 9", answer: 0},
+    {question: "1 × 3", answer: 3}, {question: "0 × 4", answer: 0},
+    {question: "0 × 10", answer: 0}, {question: "1 × 4", answer: 4},
+    {question: "0 × 1", answer: 0}, {question: "0 × 7", answer: 0},
+    {question: "1 × 1", answer: 1}, {question: "0 × 2", answer: 0},
+    {question: "0 × 8", answer: 0}, {question: "1 × 2", answer: 2},
+    {question: "2 × 11", answer: 22}, {question: "1 × 12", answer: 12},
+    {question: "4 × 12", answer: 48}, {question: "5 × 6", answer: 30},
+    {question: "5 × 12", answer: 60}, {question: "5 × 3", answer: 15},
+    {question: "5 × 9", answer: 45}
+];
 
 // Grade-specific multiplication ranges
 const gradeRanges = {
@@ -44,25 +128,73 @@ function switchMode(mode) {
     // Get sections
     const gameSection = document.getElementById('gameSection');
     const practiceSection = document.getElementById('practiceSection');
+    const williamSection = document.getElementById('williamSection');
     
     // Get buttons
     const gameModeBtn = document.getElementById('gameMode');
     const practiceModeBtn = document.getElementById('practiceMode');
+    const williamModeBtn = document.getElementById('williamMode');
     
-    // Update button styles
-    if (mode === 'game') {
-        gameModeBtn.classList.add('mode-active');
-        practiceModeBtn.classList.remove('mode-active');
-        gameSection.style.display = 'block';
-        practiceSection.style.display = 'none';
-    } else {
-        gameModeBtn.classList.remove('mode-active');
-        practiceModeBtn.classList.add('mode-active');
-        gameSection.style.display = 'none';
-        practiceSection.style.display = 'block';
-        generateFlashCards();
-        showCurrentCard();
+    // Hide all sections first
+    gameSection.style.display = 'none';
+    practiceSection.style.display = 'none';
+    williamSection.style.display = 'none';
+    
+    // Remove active class from all buttons
+    gameModeBtn.classList.remove('mode-active');
+    practiceModeBtn.classList.remove('mode-active');
+    williamModeBtn.classList.remove('mode-active');
+    
+    // Show appropriate section and activate correct button
+    switch(mode) {
+        case 'game':
+            gameSection.style.display = 'block';
+            gameModeBtn.classList.add('mode-active');
+            break;
+        case 'practice':
+            practiceSection.style.display = 'block';
+            practiceModeBtn.classList.add('mode-active');
+            generateFlashCards();
+            showCurrentCard();
+            break;
+        case 'william':
+            williamSection.style.display = 'block';
+            williamModeBtn.classList.add('mode-active');
+            initializeWilliamCards();
+            showCurrentWilliamCard();
+            break;
     }
+}
+
+// Initialize William's flash cards
+function initializeWilliamCards() {
+    williamCards = [...williamProblems]; // Create a copy of the problems
+    // Shuffle the cards
+    williamCards.sort(() => Math.random() - 0.5);
+    currentWilliamIndex = 0;
+}
+
+// Show current William card
+function showCurrentWilliamCard() {
+    if (williamCards.length === 0) return;
+    
+    const card = williamCards[currentWilliamIndex];
+    document.getElementById('williamCardQuestion').textContent = card.question;
+    document.getElementById('williamCardAnswer').textContent = card.answer;
+    
+    // Reset card flip
+    document.querySelector('#williamSection .flash-card').classList.remove('flipped');
+}
+
+// Navigate William's cards
+function previousWilliamCard() {
+    currentWilliamIndex = (currentWilliamIndex - 1 + williamCards.length) % williamCards.length;
+    showCurrentWilliamCard();
+}
+
+function nextWilliamCard() {
+    currentWilliamIndex = (currentWilliamIndex + 1) % williamCards.length;
+    showCurrentWilliamCard();
 }
 
 // Generate flash cards based on current grade level
@@ -70,7 +202,6 @@ function generateFlashCards() {
     flashCards = [];
     const range = gradeRanges[currentGrade];
     
-    // Generate cards based on grade level
     for (let i = range.min1; i <= range.max1; i++) {
         for (let j = range.min2; j <= range.max2; j++) {
             flashCards.push({
@@ -80,7 +211,6 @@ function generateFlashCards() {
         }
     }
     
-    // Shuffle the cards
     flashCards.sort(() => Math.random() - 0.5);
     currentCardIndex = 0;
 }
@@ -94,12 +224,13 @@ function showCurrentCard() {
     document.getElementById('flashCardAnswer').textContent = card.answer;
     
     // Reset card flip
-    document.querySelector('.flash-card').classList.remove('flipped');
+    document.querySelector('#practiceSection .flash-card').classList.remove('flipped');
 }
 
 // Flip the current card
 function flipCard() {
-    document.querySelector('.flash-card').classList.toggle('flipped');
+    const currentSection = currentMode === 'practice' ? '#practiceSection' : '#williamSection';
+    document.querySelector(currentSection + ' .flash-card').classList.toggle('flipped');
 }
 
 // Navigate to previous card
@@ -140,7 +271,7 @@ function setDifficulty(grade) {
     // Generate new problem or flash cards based on current mode
     if (currentMode === 'game') {
         newProblem();
-    } else {
+    } else if (currentMode === 'practice') {
         generateFlashCards();
         showCurrentCard();
     }
@@ -246,6 +377,19 @@ window.onload = function() {
                     break;
                 case 'ArrowRight':
                     nextCard();
+                    break;
+                case ' ':
+                    flipCard();
+                    event.preventDefault();
+                    break;
+            }
+        } else if (currentMode === 'william') {
+            switch(event.key) {
+                case 'ArrowLeft':
+                    previousWilliamCard();
+                    break;
+                case 'ArrowRight':
+                    nextWilliamCard();
                     break;
                 case ' ':
                     flipCard();
