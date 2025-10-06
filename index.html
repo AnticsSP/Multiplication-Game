@@ -8,12 +8,22 @@
 </head>
 <body>
     <div class="container">
+        <div class="audio-control">
+            <audio id="bgMusic" loop>
+                <source src="background-music.mp3" type="audio/mp3">
+            </audio>
+            <button onclick="toggleMusic()" class="music-button" id="musicToggle">
+                🎵 Play Music
+            </button>
+        </div>
+
         <h1>🌟 William and Violet's Multiplication Facts 🌟</h1>
         
         <div class="mode-switch">
-            <button onclick="switchMode('game')" class="mode-button mode-active" id="gameMode" style="background-color: #e67e22;">Quiz Mode 📝</button>
+            <button onclick="switchMode('game')" class="mode-button mode-active" id="gameMode" style="background-color: #e67e22;">General Quiz 📝</button>
             <button onclick="switchMode('practice')" class="mode-button" id="practiceMode" style="background-color: #e67e22;">Flash Cards 🔄</button>
-            <button onclick="switchMode('william')" class="mode-button" id="williamMode" style="background-color: #e67e22;">William's Math 📚</button>
+            <button onclick="switchMode('william')" class="mode-button" id="williamMode" style="background-color: #e67e22;">William's Cards 📚</button>
+            <button onclick="switchMode('williamQuiz')" class="mode-button" id="williamQuizMode" style="background-color: #e67e22;">William's Quiz 📝</button>
         </div>
         
         <div id="gameSection" style="display: block;">
@@ -90,6 +100,28 @@
                     William's Practice Cards - Click to flip! 🌟
                 </div>
             </div>
+        </div>
+
+        <div id="williamQuizSection" style="display: none;">
+            <div class="game-box">
+                <div id="williamProblem" class="problem">
+                    What is <span id="williamNum1">3</span> × <span id="williamNum2">4</span>?
+                </div>
+                
+                <div class="input-section">
+                    <input type="number" id="williamAnswer" placeholder="Type your answer here">
+                    <button onclick="checkWilliamAnswer()" id="williamSubmitBtn">Check Answer</button>
+                </div>
+                
+                <div id="williamFeedback" class="feedback"></div>
+                
+                <div class="score-section">
+                    <p>Score: <span id="williamScore">0</span></p>
+                    <p>Problems Solved: <span id="williamProblemsSolved">0</span></p>
+                </div>
+            </div>
+
+            <button onclick="newWilliamProblem()" id="williamNextBtn" class="next-button">Next Problem</button>
         </div>
     </div>
     <script src="script.js"></script>

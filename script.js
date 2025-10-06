@@ -4,6 +4,22 @@ let currentAnswer = 0;
 let attempts = 0;
 let currentGrade = '3rd';
 let currentMode = 'game';
+let musicPlaying = false;
+
+// Music controls
+function toggleMusic() {
+    const music = document.getElementById('bgMusic');
+    const musicButton = document.getElementById('musicToggle');
+    
+    if (musicPlaying) {
+        music.pause();
+        musicButton.textContent = '🎵 Play Music';
+    } else {
+        music.play();
+        musicButton.textContent = '🔇 Mute Music';
+    }
+    musicPlaying = !musicPlaying;
+}
 
 // Flash card variables
 let currentCardIndex = 0;
@@ -118,6 +134,13 @@ const gradeRanges = {
     }
 };
 
+// Variables for William's Quiz
+let williamScore = 0;
+let williamProblemsSolved = 0;
+let williamCurrentAnswer = 0;
+let williamAttempts = 0;
+let currentWilliamProblem = null;
+
 // Switch between game and practice modes
 function switchMode(mode) {
     console.log('Switching to mode:', mode);
@@ -129,21 +152,25 @@ function switchMode(mode) {
     const gameSection = document.getElementById('gameSection');
     const practiceSection = document.getElementById('practiceSection');
     const williamSection = document.getElementById('williamSection');
+    const williamQuizSection = document.getElementById('williamQuizSection');
     
     // Get buttons
     const gameModeBtn = document.getElementById('gameMode');
     const practiceModeBtn = document.getElementById('practiceMode');
     const williamModeBtn = document.getElementById('williamMode');
+    const williamQuizBtn = document.getElementById('williamQuizMode');
     
     // Hide all sections first
     gameSection.style.display = 'none';
     practiceSection.style.display = 'none';
     williamSection.style.display = 'none';
+    williamQuizSection.style.display = 'none';
     
     // Remove active class from all buttons
     gameModeBtn.classList.remove('mode-active');
     practiceModeBtn.classList.remove('mode-active');
     williamModeBtn.classList.remove('mode-active');
+    williamQuizBtn.classList.remove('mode-active');
     
     // Show appropriate section and activate correct button
     switch(mode) {
@@ -162,6 +189,11 @@ function switchMode(mode) {
             williamModeBtn.classList.add('mode-active');
             initializeWilliamCards();
             showCurrentWilliamCard();
+            break;
+        case 'williamQuiz':
+            williamQuizSection.style.display = 'block';
+            williamQuizBtn.classList.add('mode-active');
+            newWilliamProblem();
             break;
     }
 }
@@ -357,15 +389,102 @@ document.getElementById('answer').addEventListener('keypress', function(event) {
     }
 });
 
+// Generate a new William problem for quiz mode
+function newWilliamProblem() {
+    // Get a random problem from William's set
+    const randomIndex = Math.floor(Math.random() * williamProblems.length);
+    currentWilliamProblem = williamProblems[randomIndex];
+    
+    // Update display
+    document.getElementById('williamNum1').textContent = currentWilliamProblem.question.split(' × ')[0];
+    document.getElementById('williamNum2').textContent = currentWilliamProblem.question.split(' × ')[1];
+    
+    williamCurrentAnswer = currentWilliamProblem.answer;
+    williamAttempts = 0;
+    
+    // Reset input and feedback
+    document.getElementById('williamAnswer').value = '';
+    document.getElementById('williamFeedback').textContent = '';
+    document.getElementById('williamFeedback').className = 'feedback';
+    
+    // Enable input and button
+    document.getElementById('williamAnswer').disabled = false;
+    document.getElementById('williamSubmitBtn').disabled = false;
+    
+    // Focus on input
+    document.getElementById('williamAnswer').focus();
+}
+
+// Check William's quiz answer
+function checkWilliamAnswer() {
+    const userAnswer = parseInt(document.getElementById('williamAnswer').value);
+    const feedback = document.getElementById('williamFeedback');
+    
+    if (isNaN(userAnswer)) {
+        feedback.textContent = 'Please enter a number!';
+        feedback.className = 'feedback incorrect';
+        return;
+    }
+    
+    williamAttempts++;
+    
+    if (userAnswer === williamCurrentAnswer) {
+        feedback.className = 'feedback correct';
+        
+        if (williamAttempts === 1) {
+            williamScore += 15;
+            feedback.textContent = '🌟 Perfect! First try bonus: +15 points! 🌟';
+        } else {
+            williamScore += 10;
+            feedback.textContent = '✨ Correct! +10 points! ✨';
+        }
+        
+        williamProblemsSolved++;
+        
+        document.getElementById('williamAnswer').disabled = true;
+        document.getElementById('williamSubmitBtn').disabled = true;
+    } else {
+        if (williamAttempts < 2) {
+            feedback.textContent = 'Try one more time!';
+            feedback.className = 'feedback incorrect';
+        } else {
+            feedback.textContent = `The answer is ${williamCurrentAnswer}. Let's try another one!`;
+            feedback.className = 'feedback incorrect';
+            if (williamScore > 0) williamScore -= 5;
+            document.getElementById('williamAnswer').disabled = true;
+            document.getElementById('williamSubmitBtn').disabled = true;
+        }
+    }
+    
+    // Update William's score display
+    document.getElementById('williamScore').textContent = williamScore;
+    document.getElementById('williamProblemsSolved').textContent = williamProblemsSolved;
+}
+
 // Initialize the game
 window.onload = function() {
     setDifficulty('3rd');
     switchMode('game');
     
+    // Add event listener for William's quiz
+    document.getElementById('williamNextBtn').addEventListener('click', function() {
+        document.getElementById('williamAnswer').disabled = false;
+        document.getElementById('williamSubmitBtn').disabled = false;
+        newWilliamProblem();
+    });
+    
+    // Add event listener for general quiz
     document.getElementById('next-btn').addEventListener('click', function() {
         document.getElementById('answer').disabled = false;
         document.getElementById('submit-btn').disabled = false;
         newProblem();
+    });
+    
+    // Add event listener for William's quiz Enter key
+    document.getElementById('williamAnswer').addEventListener('keypress', function(event) {
+        if (event.key === 'Enter' && !this.disabled) {
+            checkWilliamAnswer();
+        }
     });
     
     // Add keyboard navigation for flash cards

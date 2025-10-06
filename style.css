@@ -1,8 +1,30 @@
+.audio-control {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 100;
+}
+
+.music-button {
+    background-color: #e67e22;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    opacity: 0.8;
+    transition: all 0.3s;
+}
+
+.music-button:hover {
+    opacity: 1;
+    transform: scale(1.05);
+}
+
 .mode-switch {
     margin: 20px 0;
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 15px;
+    flex-wrap: wrap;
 }
 
 .mode-button {
