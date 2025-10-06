@@ -8,15 +8,17 @@
 </head>
 <body>
     <div class="container">
-        <div class="music-controls">
-            <audio id="bgMusic" loop>
-                <source src="https://raw.githubusercontent.com/spaita/multiplication-game/main/background-music.mp3" type="audio/mp3">
-            </audio>
-            <button id="musicToggle" onclick="toggleMusic()" class="music-button">
-                🎵 Play Music
-            </button>
-        </div>
         <h1>🌟 William and Violet's Multiplication Facts 🌟</h1>
+        
+        <div class="difficulty-controls">
+            <button onclick="setDifficulty('3rd')" class="grade-btn" id="grade3">3rd Grade</button>
+            <button onclick="setDifficulty('4th')" class="grade-btn" id="grade4">4th Grade</button>
+            <button onclick="setDifficulty('5th')" class="grade-btn" id="grade5">5th Grade</button>
+        </div>
+        
+        <div class="current-level">
+            Current Level: <span id="currentGrade">3rd Grade</span>
+        </div>
         
         <div class="game-box">
             <div id="problem" class="problem">

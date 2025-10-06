@@ -1,13 +1,14 @@
-# Multiplication Practice Game 🌟
+# William and Violet's Multiplication Facts 🌟
 
-A fun, interactive web game to help children practice their multiplication tables! This simple web application makes learning multiplication tables engaging and enjoyable.
+A fun, interactive web game to help practice multiplication tables! This simple web application makes learning multiplication tables engaging and enjoyable.
 
 ## Features
 
 - 🎮 Interactive multiplication problems
-- ⭐ Score tracking
-- 🎯 Immediate feedback
-- 🌈 Kid-friendly design
+- 🎯 Two attempts per question
+- 🎵 Optional background music
+- ⭐ Score tracking system
+- 🌈 Kid-friendly dark mode design
 - 📱 Mobile-responsive layout
 
 ## How to Play
@@ -15,34 +16,34 @@ A fun, interactive web game to help children practice their multiplication table
 1. The game will show you a multiplication problem
 2. Type your answer in the input box
 3. Click "Check Answer" or press Enter to submit
-4. Get feedback instantly!
+4. You get two tries before seeing the answer
 5. Click "Next Problem" to continue practicing
+6. Toggle background music with the music button
 
-## How to Host on GitHub Pages
+## Scoring System
 
-1. Create a new repository on GitHub
-2. Upload these files to your repository
-3. Go to repository Settings
-4. Scroll down to "GitHub Pages" section
-5. Select "main" branch as the source
-6. Your site will be published at `https://[your-username].github.io/[repository-name]`
+- ✅ Correct answer: +10 points
+- ❌ Wrong answer after two attempts: -5 points
+- First attempt is free - no points deducted!
+
+## Setup Instructions
+
+1. Visit the game at: https://[your-github-username].github.io/multiplication-game/
+2. No installation needed - just open in any web browser!
 
 ## Local Development
 
-To run this game locally, simply open the `index.html` file in your web browser. No special server or setup required!
-
-## Technologies Used
-
-- HTML5
-- CSS3
-- JavaScript
+To run this game locally:
+1. Clone this repository
+2. Open `index.html` in your web browser
+3. That's it! No server required
 
 ## Contributing
 
-Feel free to fork this repository and make your own improvements! Some ideas for enhancements:
+Feel free to fork this repository and make your own improvements! Some ideas:
 - Add different difficulty levels
 - Include more animations
-- Add sound effects
+- Add new sound effects
 - Create a time challenge mode
 
 ## License

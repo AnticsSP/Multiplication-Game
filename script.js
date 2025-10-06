@@ -2,28 +2,60 @@ let score = 0;
 let problemsSolved = 0;
 let currentAnswer = 0;
 let attempts = 0;
-let musicPlaying = false;
+let currentGrade = '3rd';
 
-// Music controls
-function toggleMusic() {
-    const music = document.getElementById('bgMusic');
-    const musicButton = document.getElementById('musicToggle');
-    
-    if (musicPlaying) {
-        music.pause();
-        musicButton.textContent = '🎵 Play Music';
-    } else {
-        music.play();
-        musicButton.textContent = '🔇 Mute Music';
+// Grade-specific multiplication ranges
+const gradeRanges = {
+    '3rd': {
+        min1: 2,
+        max1: 12,
+        min2: 2,
+        max2: 12,
+        description: 'Basic multiplication facts up to 12 × 12'
+    },
+    '4th': {
+        min1: 2,
+        max1: 12,
+        min2: 10,
+        max2: 99,
+        description: 'Multiplication with two-digit numbers'
+    },
+    '5th': {
+        min1: 10,
+        max1: 99,
+        min2: 10,
+        max2: 99,
+        description: 'Multi-digit multiplication'
     }
-    musicPlaying = !musicPlaying;
+};
+
+// Set difficulty level
+function setDifficulty(grade) {
+    currentGrade = grade;
+    document.getElementById('currentGrade').textContent = grade + ' Grade';
+    
+    // Update active button styling
+    document.querySelectorAll('.grade-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    document.getElementById('grade' + grade[0]).classList.add('active');
+    
+    // Generate a new problem at the selected difficulty
+    newProblem();
+    
+    // Reset score for new difficulty level
+    score = 0;
+    problemsSolved = 0;
+    updateScore();
 }
 
 // Generate a new multiplication problem
 function newProblem() {
-    // Generate random numbers between 1 and 12
-    const num1 = Math.floor(Math.random() * 12) + 1;
-    const num2 = Math.floor(Math.random() * 12) + 1;
+    const range = gradeRanges[currentGrade];
+    
+    // Generate random numbers within the grade-specific range
+    const num1 = Math.floor(Math.random() * (range.max1 - range.min1 + 1)) + range.min1;
+    const num2 = Math.floor(Math.random() * (range.max2 - range.min2 + 1)) + range.min2;
     
     // Update the display
     document.getElementById('num1').textContent = num1;
@@ -40,8 +72,18 @@ function newProblem() {
     document.getElementById('feedback').textContent = '';
     document.getElementById('feedback').className = 'feedback';
     
+    // Enable input and submit button
+    document.getElementById('answer').disabled = false;
+    document.getElementById('submit-btn').disabled = false;
+    
     // Focus on the input field
     document.getElementById('answer').focus();
+}
+
+// Update score display
+function updateScore() {
+    document.getElementById('score').textContent = score;
+    document.getElementById('problems-solved').textContent = problemsSolved;
 }
 
 // Check if the answer is correct
@@ -59,18 +101,17 @@ function checkAnswer() {
     
     if (userAnswer === currentAnswer) {
         feedback.className = 'feedback correct';
-        score += 10;
-        problemsSolved++;
         
-        // Add some randomized encouraging messages
-        const messages = [
-            "Amazing work! 🌟",
-            "You're doing great! 🎉",
-            "Math superstar! ⭐",
-            "Keep it up! 🚀",
-            "Fantastic! 🌈"
-        ];
-        feedback.textContent = messages[Math.floor(Math.random() * messages.length)];
+        // Add bonus points for solving on first attempt
+        if (attempts === 1) {
+            score += 15; // Extra points for first try
+            feedback.textContent = '🌟 Perfect! First try bonus: +15 points! 🌟';
+        } else {
+            score += 10;
+            feedback.textContent = '✨ Correct! +10 points! ✨';
+        }
+        
+        problemsSolved++;
         
         // Disable input until next problem
         document.getElementById('answer').disabled = true;
@@ -79,7 +120,7 @@ function checkAnswer() {
         if (attempts < 2) {
             feedback.textContent = 'Try one more time!';
             feedback.className = 'feedback incorrect';
-            // Don't deduct points for first attempt
+            // No points deducted for first attempt
         } else {
             feedback.textContent = `The answer is ${currentAnswer}. Let's try another one!`;
             feedback.className = 'feedback incorrect';
@@ -91,8 +132,7 @@ function checkAnswer() {
     }
     
     // Update score display
-    document.getElementById('score').textContent = score;
-    document.getElementById('problems-solved').textContent = problemsSolved;
+    updateScore();
 }
 
 // Add event listener for Enter key
@@ -102,9 +142,10 @@ document.getElementById('answer').addEventListener('keypress', function(event) {
     }
 });
 
-// Initialize the first problem when the page loads
+// Initialize the game
 window.onload = function() {
-    newProblem();
+    // Set initial difficulty to 3rd grade
+    setDifficulty('3rd');
     
     // Enable input and submit button when clicking Next Problem
     document.getElementById('next-btn').addEventListener('click', function() {
