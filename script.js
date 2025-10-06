@@ -31,6 +31,7 @@ const gradeRanges = {
 
 // Set difficulty level
 function setDifficulty(grade) {
+    // Update current grade
     currentGrade = grade;
     document.getElementById('currentGrade').textContent = grade + ' Grade';
     
@@ -38,15 +39,15 @@ function setDifficulty(grade) {
     document.querySelectorAll('.grade-btn').forEach(btn => {
         btn.classList.remove('active');
     });
-    document.getElementById('grade' + grade[0]).classList.add('active');
+    document.getElementById('grade' + grade).classList.add('active');
     
-    // Generate a new problem at the selected difficulty
-    newProblem();
-    
-    // Reset score for new difficulty level
+    // Reset score and problems for new difficulty
     score = 0;
     problemsSolved = 0;
     updateScore();
+    
+    // Generate new problem at the selected difficulty
+    newProblem();
 }
 
 // Generate a new multiplication problem
@@ -151,5 +152,6 @@ window.onload = function() {
     document.getElementById('next-btn').addEventListener('click', function() {
         document.getElementById('answer').disabled = false;
         document.getElementById('submit-btn').disabled = false;
+        newProblem();
     });
 };
