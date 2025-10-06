@@ -108,11 +108,11 @@ button:hover {
 }
 
 .next-button {
-    background-color: #27ae60;  /* Darker green for next button */
+    background-color: #e67e22;  /* Orange for next button */
 }
 
 .next-button:hover {
-    background-color: #219a52;  /* Even darker green on hover */
+    background-color: #d35400;  /* Darker orange on hover */
 }
 
 .feedback {

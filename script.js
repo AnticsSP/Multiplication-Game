@@ -31,6 +31,8 @@ const gradeRanges = {
 
 // Set difficulty level
 function setDifficulty(grade) {
+    console.log('Setting difficulty to:', grade); // Debug log
+    
     // Update current grade
     currentGrade = grade;
     document.getElementById('currentGrade').textContent = grade + ' Grade';
@@ -39,7 +41,14 @@ function setDifficulty(grade) {
     document.querySelectorAll('.grade-btn').forEach(btn => {
         btn.classList.remove('active');
     });
-    document.getElementById('grade' + grade).classList.add('active');
+    
+    // Update the active button
+    const buttonId = 'grade' + grade.toLowerCase().replace('th', '').replace('rd', '').replace('nd', '');
+    console.log('Looking for button:', buttonId); // Debug log
+    const button = document.getElementById(buttonId);
+    if (button) {
+        button.classList.add('active');
+    }
     
     // Reset score and problems for new difficulty
     score = 0;
