@@ -10,11 +10,17 @@
     <div class="container">
         <h1>🌟 William and Violet's Multiplication Facts 🌟</h1>
         
-        <div class="difficulty-controls">
-            <button onclick="setDifficulty('3rd')" class="grade-btn" id="grade3">3rd Grade</button>
-            <button onclick="setDifficulty('4th')" class="grade-btn" id="grade4">4th Grade</button>
-            <button onclick="setDifficulty('5th')" class="grade-btn" id="grade5">5th Grade</button>
+        <div class="mode-switch">
+            <button onclick="switchMode('game')" class="mode-btn active" id="gameMode">Quiz Mode 📝</button>
+            <button onclick="switchMode('practice')" class="mode-btn" id="practiceMode">Flash Cards 🔄</button>
         </div>
+        
+        <div id="gameSection">
+            <div class="difficulty-controls">
+                <button onclick="setDifficulty('3rd')" class="grade-btn" id="grade3">3rd Grade</button>
+                <button onclick="setDifficulty('4th')" class="grade-btn" id="grade4">4th Grade</button>
+                <button onclick="setDifficulty('5th')" class="grade-btn" id="grade5">5th Grade</button>
+            </div>
         
         <div class="current-level">
             Current Level: <span id="currentGrade">3rd Grade</span>
@@ -39,6 +45,29 @@
         </div>
 
         <button onclick="newProblem()" id="next-btn" class="next-button">Next Problem</button>
+        </div>
+
+        <div id="practiceSection" style="display: none;">
+            <div class="flash-card-container">
+                <div class="flash-card" onclick="flipCard()">
+                    <div class="flash-card-inner">
+                        <div class="flash-card-front">
+                            <span id="flashCardQuestion">2 × 2</span>
+                        </div>
+                        <div class="flash-card-back">
+                            <span id="flashCardAnswer">4</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flash-card-controls">
+                    <button onclick="previousCard()" class="control-btn">← Previous</button>
+                    <button onclick="nextCard()" class="control-btn">Next →</button>
+                </div>
+                <div class="practice-info">
+                    Click card to flip! Practice makes perfect! 🌟
+                </div>
+            </div>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>

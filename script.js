@@ -3,6 +3,11 @@ let problemsSolved = 0;
 let currentAnswer = 0;
 let attempts = 0;
 let currentGrade = '3rd';
+let currentMode = 'game';
+
+// Flash card variables
+let currentCardIndex = 0;
+let flashCards = [];
 
 // Grade-specific multiplication ranges
 const gradeRanges = {
@@ -29,11 +34,79 @@ const gradeRanges = {
     }
 };
 
+// Switch between game and practice modes
+function switchMode(mode) {
+    currentMode = mode;
+    
+    // Update button styles
+    document.querySelectorAll('.mode-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    document.getElementById(mode + 'Mode').classList.add('active');
+    
+    // Show/hide appropriate sections
+    document.getElementById('gameSection').style.display = mode === 'game' ? 'block' : 'none';
+    document.getElementById('practiceSection').style.display = mode === 'practice' ? 'block' : 'none';
+    
+    if (mode === 'practice') {
+        generateFlashCards();
+        showCurrentCard();
+    }
+}
+
+// Generate flash cards based on current grade level
+function generateFlashCards() {
+    flashCards = [];
+    const range = gradeRanges[currentGrade];
+    
+    // Generate cards based on grade level
+    for (let i = range.min1; i <= range.max1; i++) {
+        for (let j = range.min2; j <= range.max2; j++) {
+            flashCards.push({
+                question: `${i} × ${j}`,
+                answer: i * j
+            });
+        }
+    }
+    
+    // Shuffle the cards
+    flashCards.sort(() => Math.random() - 0.5);
+    currentCardIndex = 0;
+}
+
+// Show the current flash card
+function showCurrentCard() {
+    if (flashCards.length === 0) return;
+    
+    const card = flashCards[currentCardIndex];
+    document.getElementById('flashCardQuestion').textContent = card.question;
+    document.getElementById('flashCardAnswer').textContent = card.answer;
+    
+    // Reset card flip
+    document.querySelector('.flash-card').classList.remove('flipped');
+}
+
+// Flip the current card
+function flipCard() {
+    document.querySelector('.flash-card').classList.toggle('flipped');
+}
+
+// Navigate to previous card
+function previousCard() {
+    currentCardIndex = (currentCardIndex - 1 + flashCards.length) % flashCards.length;
+    showCurrentCard();
+}
+
+// Navigate to next card
+function nextCard() {
+    currentCardIndex = (currentCardIndex + 1) % flashCards.length;
+    showCurrentCard();
+}
+
 // Set difficulty level
 function setDifficulty(grade) {
-    console.log('Setting difficulty to:', grade); // Debug log
+    console.log('Setting difficulty to:', grade);
     
-    // Update current grade
     currentGrade = grade;
     document.getElementById('currentGrade').textContent = grade + ' Grade';
     
@@ -42,9 +115,7 @@ function setDifficulty(grade) {
         btn.classList.remove('active');
     });
     
-    // Update the active button
-    const buttonId = 'grade' + grade.toLowerCase().replace('th', '').replace('rd', '').replace('nd', '');
-    console.log('Looking for button:', buttonId); // Debug log
+    const buttonId = 'grade' + grade[0];
     const button = document.getElementById(buttonId);
     if (button) {
         button.classList.add('active');
@@ -55,38 +126,35 @@ function setDifficulty(grade) {
     problemsSolved = 0;
     updateScore();
     
-    // Generate new problem at the selected difficulty
-    newProblem();
+    // Generate new problem or flash cards based on current mode
+    if (currentMode === 'game') {
+        newProblem();
+    } else {
+        generateFlashCards();
+        showCurrentCard();
+    }
 }
 
 // Generate a new multiplication problem
 function newProblem() {
     const range = gradeRanges[currentGrade];
     
-    // Generate random numbers within the grade-specific range
     const num1 = Math.floor(Math.random() * (range.max1 - range.min1 + 1)) + range.min1;
     const num2 = Math.floor(Math.random() * (range.max2 - range.min2 + 1)) + range.min2;
     
-    // Update the display
     document.getElementById('num1').textContent = num1;
     document.getElementById('num2').textContent = num2;
     
-    // Store the correct answer
     currentAnswer = num1 * num2;
-    
-    // Reset attempts for new problem
     attempts = 0;
     
-    // Clear the input and feedback
     document.getElementById('answer').value = '';
     document.getElementById('feedback').textContent = '';
     document.getElementById('feedback').className = 'feedback';
     
-    // Enable input and submit button
     document.getElementById('answer').disabled = false;
     document.getElementById('submit-btn').disabled = false;
     
-    // Focus on the input field
     document.getElementById('answer').focus();
 }
 
@@ -112,9 +180,8 @@ function checkAnswer() {
     if (userAnswer === currentAnswer) {
         feedback.className = 'feedback correct';
         
-        // Add bonus points for solving on first attempt
         if (attempts === 1) {
-            score += 15; // Extra points for first try
+            score += 15;
             feedback.textContent = '🌟 Perfect! First try bonus: +15 points! 🌟';
         } else {
             score += 10;
@@ -123,25 +190,21 @@ function checkAnswer() {
         
         problemsSolved++;
         
-        // Disable input until next problem
         document.getElementById('answer').disabled = true;
         document.getElementById('submit-btn').disabled = true;
     } else {
         if (attempts < 2) {
             feedback.textContent = 'Try one more time!';
             feedback.className = 'feedback incorrect';
-            // No points deducted for first attempt
         } else {
             feedback.textContent = `The answer is ${currentAnswer}. Let's try another one!`;
             feedback.className = 'feedback incorrect';
             if (score > 0) score -= 5;
-            // Disable input until next problem
             document.getElementById('answer').disabled = true;
             document.getElementById('submit-btn').disabled = true;
         }
     }
     
-    // Update score display
     updateScore();
 }
 
@@ -154,13 +217,30 @@ document.getElementById('answer').addEventListener('keypress', function(event) {
 
 // Initialize the game
 window.onload = function() {
-    // Set initial difficulty to 3rd grade
     setDifficulty('3rd');
+    switchMode('game');
     
-    // Enable input and submit button when clicking Next Problem
     document.getElementById('next-btn').addEventListener('click', function() {
         document.getElementById('answer').disabled = false;
         document.getElementById('submit-btn').disabled = false;
         newProblem();
+    });
+    
+    // Add keyboard navigation for flash cards
+    document.addEventListener('keydown', function(event) {
+        if (currentMode === 'practice') {
+            switch(event.key) {
+                case 'ArrowLeft':
+                    previousCard();
+                    break;
+                case 'ArrowRight':
+                    nextCard();
+                    break;
+                case ' ':
+                    flipCard();
+                    event.preventDefault();
+                    break;
+            }
+        }
     });
 };
