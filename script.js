@@ -37,34 +37,29 @@ const gradeRanges = {
 // Switch between game and practice modes
 function switchMode(mode) {
     console.log('Switching to mode:', mode);
+    
+    // Update mode
     currentMode = mode;
     
-    // Update button styles
-    document.querySelectorAll('.mode-btn').forEach(btn => {
-        btn.classList.remove('active');
-        console.log('Removed active class from:', btn.id);
-    });
-    
-    const modeButton = document.getElementById(mode + 'Mode');
-    console.log('Adding active class to:', mode + 'Mode');
-    if (modeButton) {
-        modeButton.classList.add('active');
-    }
-    
-    // Show/hide appropriate sections
+    // Get sections
     const gameSection = document.getElementById('gameSection');
     const practiceSection = document.getElementById('practiceSection');
     
-    console.log('Updating section visibility');
-    if (gameSection && practiceSection) {
-        gameSection.style.display = mode === 'game' ? 'block' : 'none';
-        practiceSection.style.display = mode === 'practice' ? 'block' : 'none';
-        console.log('Game section display:', gameSection.style.display);
-        console.log('Practice section display:', practiceSection.style.display);
-    }
+    // Get buttons
+    const gameModeBtn = document.getElementById('gameMode');
+    const practiceModeBtn = document.getElementById('practiceMode');
     
-    if (mode === 'practice') {
-        console.log('Generating flash cards');
+    // Update button styles
+    if (mode === 'game') {
+        gameModeBtn.classList.add('mode-active');
+        practiceModeBtn.classList.remove('mode-active');
+        gameSection.style.display = 'block';
+        practiceSection.style.display = 'none';
+    } else {
+        gameModeBtn.classList.remove('mode-active');
+        practiceModeBtn.classList.add('mode-active');
+        gameSection.style.display = 'none';
+        practiceSection.style.display = 'block';
         generateFlashCards();
         showCurrentCard();
     }
