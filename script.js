@@ -172,6 +172,10 @@ function switchMode(mode) {
     williamModeBtn.classList.remove('mode-active');
     williamQuizBtn.classList.remove('mode-active');
     
+    console.log('Switching to mode:', mode);
+    console.log('Sections:', {gameSection, practiceSection, williamSection, williamQuizSection});
+    console.log('Buttons:', {gameModeBtn, practiceModeBtn, williamModeBtn, williamQuizBtn});
+
     // Show appropriate section and activate correct button
     switch(mode) {
         case 'game':
@@ -191,9 +195,14 @@ function switchMode(mode) {
             showCurrentWilliamCard();
             break;
         case 'williamQuiz':
-            williamQuizSection.style.display = 'block';
-            williamQuizBtn.classList.add('mode-active');
-            newWilliamProblem();
+            console.log('Entering William Quiz mode');
+            if (williamQuizSection) {
+                williamQuizSection.style.display = 'block';
+                williamQuizBtn.classList.add('mode-active');
+                newWilliamProblem();
+            } else {
+                console.error('William Quiz section not found!');
+            }
             break;
     }
 }
