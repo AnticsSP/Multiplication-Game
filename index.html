@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>William and Violet's Multiplication Facts</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="music-controls">
+            <audio id="bgMusic" loop>
+                <source src="https://raw.githubusercontent.com/spaita/multiplication-game/main/background-music.mp3" type="audio/mp3">
+            </audio>
+            <button id="musicToggle" onclick="toggleMusic()" class="music-button">
+                🎵 Play Music
+            </button>
+        </div>
+        <h1>🌟 William and Violet's Multiplication Facts 🌟</h1>
+        
+        <div class="game-box">
+            <div id="problem" class="problem">
+                What is <span id="num1">3</span> × <span id="num2">4</span>?
+            </div>
+            
+            <div class="input-section">
+                <input type="number" id="answer" placeholder="Type your answer here">
+                <button onclick="checkAnswer()" id="submit-btn">Check Answer</button>
+            </div>
+            
+            <div id="feedback" class="feedback"></div>
+            
+            <div class="score-section">
+                <p>Score: <span id="score">0</span></p>
+                <p>Problems Solved: <span id="problems-solved">0</span></p>
+            </div>
+        </div>
+
+        <button onclick="newProblem()" id="next-btn" class="next-button">Next Problem</button>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

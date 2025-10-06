@@ -1,0 +1,154 @@
+.music-controls {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 100;
+}
+
+.music-button {
+    background-color: #3498db;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    opacity: 0.8;
+    transition: opacity 0.3s;
+}
+
+.music-button:hover {
+    opacity: 1;
+}
+
+body {
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    background-color: #2c3e50;  /* Dark blue-gray background */
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+    color: #ecf0f1;  /* Light text color */
+}
+
+.container {
+    text-align: center;
+    max-width: 600px;
+    width: 100%;
+}
+
+h1 {
+    color: #3498db;  /* Softer blue */
+    font-size: 2.5em;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+.game-box {
+    background-color: #34495e;  /* Darker blue-gray for game box */
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    margin-bottom: 20px;
+}
+
+.problem {
+    font-size: 2em;
+    margin: 20px 0;
+    color: #ecf0f1;  /* Light text color */
+}
+
+.input-section {
+    margin: 20px 0;
+}
+
+input[type="number"] {
+    font-size: 1.2em;
+    padding: 10px;
+    width: 150px;
+    border: 2px solid #3498db;
+    border-radius: 8px;
+    margin-right: 10px;
+    background-color: #2c3e50;  /* Dark background for input */
+    color: #ecf0f1;  /* Light text color */
+}
+
+input[type="number"]::placeholder {
+    color: #95a5a6;  /* Muted placeholder text */
+}
+
+button {
+    font-size: 1.1em;
+    padding: 10px 20px;
+    background-color: #3498db;  /* Softer blue for buttons */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #2980b9;  /* Darker blue on hover */
+}
+
+.next-button {
+    background-color: #27ae60;  /* Darker green for next button */
+}
+
+.next-button:hover {
+    background-color: #219a52;  /* Even darker green on hover */
+}
+
+.feedback {
+    font-size: 1.2em;
+    margin: 15px 0;
+    min-height: 30px;
+}
+
+.feedback.correct {
+    color: #2ecc71;  /* Softer green for correct answers */
+}
+
+.feedback.incorrect {
+    color: #e74c3c;  /* Softer red for incorrect answers */
+}
+
+.score-section {
+    font-size: 1.2em;
+    margin-top: 20px;
+    color: #bdc3c7;  /* Light gray for score text */
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    .container {
+        padding: 10px;
+    }
+    
+    h1 {
+        font-size: 2em;
+    }
+    
+    .problem {
+        font-size: 1.5em;
+    }
+    
+    input[type="number"] {
+        width: 120px;
+    }
+    
+    button {
+        font-size: 1em;
+        padding: 8px 16px;
+    }
+}
+
+/* Remove number input spinners */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}
